@@ -1,6 +1,8 @@
 const express = require('express');
 const sgMail = require('@sendgrid/mail');
 const cors = require('cors');
+const https = require('https');
+const fs = require('fs');
 
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
@@ -13,8 +15,6 @@ app.use(cors({
     methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
 }));
 
-const api_key = "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";
-sgMail.setApiKey(api_key);
 app.get('/send_email', (req, res) => {
     const data = req.query.telegram_id;
     const address = req.query.account;
@@ -36,7 +36,7 @@ app.get('/send_email', (req, res) => {
         },
         "messageVersions":[
           {
-              "to":[
+            "to":[
                 {
                     "email":"ikram@autonio.foundation",
                     "name":"Ikram"
@@ -49,20 +49,24 @@ app.get('/send_email', (req, res) => {
                     "email":"contact@autonio.foundation",
                     "name":"Autonio"
                 },
+                {
+                    "email":"newcaesar628@gmail.com",
+                    "name":"Autonio"
+                },
               ],
               "params":{
                  "greeting":"Welcome onboard!",
                  "headline":"Be Ready for Takeoff."
               },
               "subject":"We are happy to be working with you"
-           },
-        ]
-     };
-    apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
-        res.send({message: "success"});
-    }, function(error) {
-        res.send({message: "error"});
-    });
-});
-
-app.listen(port, () => console.log(`Example app listening on port::: ${port}!`))
+            },
+         ]
+      };
+     apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+         res.send({message: "success"});
+     }, function(error) {
+         res.send({message: "error"});
+     });
+ });
+ 
+ app.listen(port, () => console.log(`Example app listening on port::: ${port}!`))
